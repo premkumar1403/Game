@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="game.css">
+</head>
+
+<body>
+    <!-- //Flex concept -->
+    <header>
+        <div>
+            <h1 style="color: rgba(100, 25, 127,80%);text-align: center; margin-top: 20px;">Let's Play</h1>
+        </div>
+    </header>
+    <section style="display: flex;align-items: center;justify-content: center;margin-top: 60px;">
+        <div style="display: grid;grid-template-columns: repeat(3,1fr);gap:10px;">
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+        </div>
+    </section>
+    <section style="padding:5%; display: flex; justify-content: center;gap: 20px;align-items: center;">
+        <div
+            style="width: 80px; height: 40px; background-color: whitesmoke; border-radius: 50px;position: relative; border: 1px solid whitesmoke">
+            <div id="btn"
+                style="width: 20px;height: 20px;border-radius: 50px; background-color: gainsboro; padding: 8px;position: absolute;margin-top: 2px;margin-left: 2px;">
+            </div>
+        </div>
+        <button
+            style="padding: 10px;font-size: x-large;border-radius: 10px;background-color: greenyellow;color: white; border: 1px solid greenyellow;">Back</button>
+        <button
+            style="padding: 10px; font-size: x-large;border-radius: 10px;background-color: rgb(200, 25, 112);color: white; border: 1px solid rgb(200, 25, 112);"
+            id="reset">Reset</button>
+    </section>
+    <p id="pa"
+        style="color: blueviolet; text-align: center;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-weight: bolder;">
+    </p>
+
+
+
+
+    <script>
+        let btn = document.getElementById("btn")
+        btn.addEventListener("click", () => {
+            btn.style.marginLeft = "40px"
+
+            btn.style.marginRight = "40px"
+
+        })
+
+
+        let boxes = document.querySelectorAll(".box")
+        let para = document.getElementById("pa")
+        let turn = "X";
+        let isover = true;
+        let winingpos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+        //iterate each element 
+        boxes.forEach((element) => {
+            element.addEventListener("click", () => {
+                if (isover && element.innerHTML === "") {
+                    element.innerHTML = turn;
+                    element.style.backgroundColor = "greenyellow"
+                    element.style.color = "white"
+                    element.style.fontSize = "x-large"
+                    checkwin()
+                    checkdraw()
+                    changeturn()
+
+
+                }
+
+            })
+        });
+        //change X to O
+        function changeturn() {
+            if (turn === "X") {
+                turn = "O"
+
+            }
+            else {
+                turn = "X"
+            }
+        }
+        function checkwin() {
+            for (let i = 0; i < winingpos.length; i++) {
+                let p1 = boxes[winingpos[i][0]].innerHTML
+                let p2 = boxes[winingpos[i][1]].innerHTML
+                let p3 = boxes[winingpos[i][2]].innerHTML
+                if (p1 != "" && p1 == p2 & p1 == p3) {
+                    para.innerHTML = `Player ${turn} Win`
+                    para.style.color = "green"
+                    isover = false
+                    for (let j = 0; j < 3; j++) {
+                        boxes[winingpos[i][j]].style.backgroundColor = "rgb(200, 25, 112)"
+                        boxes[winingpos[i][j]].style.color = "white"
+
+                    }
+
+                }
+
+
+            }
+
+
+        }
+        function checkdraw() {
+            if (isover) {
+                let draw = true;
+                boxes.forEach((e) => {
+                    if (e.innerHTML === "")
+                        draw = false;
+                })
+                if (draw) {
+                    isover = false;
+                    para.innerHTML = "Game Over!"
+                    para.style.color = "red"
+                    para.style.fontSiz = "100px"
+
+                }
+            }
+        }
+        document.querySelector("#reset").addEventListener("click", () => {
+            turn = "X"
+            isover = true;
+            para.innerHTML = ""
+            boxes.forEach((e) => {
+                e.innerHTML = ""
+                e.style.backgroundColor = "whitesmoke"
+                e.style.color = "white"
+            })
+        })
+
+    </script>
+
+
+    <style>
+        .box {
+            background-color: whitesmoke;
+            border: 1px solid peru;
+            width: 100px;
+            height: 100px;
+            font-size: xx-large;
+            color: blueviolet;
+        }
+    </style>
+</body>
+
+</html>
